@@ -1,0 +1,7 @@
+# Ignore compiled classes and BlueJ internal files
+*.class
+*.ctxt
+*.def
+*.ctxt
+*.class
+
