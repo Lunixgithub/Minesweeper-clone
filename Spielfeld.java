@@ -9,11 +9,11 @@
  * @version version 1.0
  */
 
-public class Blumenwelt
+public class Spielfeld
 {
     Zelle[][] feld; // Array für alle Karten
 
-    Blumenwelt() 
+    Spielfeld() 
     {
         // 1. Karten-Array anlegen (z.B. 4x4)
         int reihen = 10;
