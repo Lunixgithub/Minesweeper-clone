@@ -28,19 +28,19 @@ public class ZellenEreignis extends Ereignisbehandlung
     // Überschreibt die Maus-Klick-Funktion
     @Override
     void MausGeklickt(int x, int y, int anzahl) {
-        // Durch alle Zellen prüfen
-        for (int i = 0; i < zellen.length; i++) {
-            for (int j = 0; j < zellen[i].length; j++) {
-                Zelle z = zellen[i][j];
-                if (x >= z.getX() && x <= z.getX() + z.getBreite()
-                    && y >= z.getY() && y <= z.getY() + z.getHöhe())
-                {
-                    System.out.println("Zelle [" + i + "," + j + "] wurde angeklickt!");
-                    // Zelle angeklickt -> Farbe ändern
-                    z.FarbeSetzen("rot"); 
-                }
+    for (int i = 0; i < zellen.length; i++) {
+        for (int j = 0; j < zellen[i].length; j++) {
+            Zelle z = zellen[i][j];
+
+            if (x >= z.getX() && x <= z.getX() + z.getBreite() &&
+                y >= z.getY() && y <= z.getY() + z.getHöhe())
+            {
+                System.out.println("Zelle [" + i + "," + j + "] wurde angeklickt!");
+                
+                z.Aufdecken();  // ✔ richtig
             }
         }
     }
+}
 }
 

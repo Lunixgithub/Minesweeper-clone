@@ -7,8 +7,17 @@
  * @author Peter Brichzin
  * @version 1.0
  */
+
+
 class Zelle extends Rechteck
 {
+    // --- MINESWEEPER-FUNKTIONEN ---
+    boolean istBombe = false;
+    boolean istAufgedeckt = false;
+    int bombeNachbarn = 0;
+
+    int zeile;
+    int spalte;
 
     /**
      * Erzeugt und platziert eine Zelle in der gewünschten Farbe.
@@ -24,6 +33,8 @@ class Zelle extends Rechteck
         GrößeSetzen(46, 46);
         FarbeSetzen(farbeNeu);
     }
+
+    // Getter
     int getX() { 
         return x; 
     }
@@ -33,7 +44,38 @@ class Zelle extends Rechteck
     int getBreite() { 
         return breite; 
     }
-    int getHöhe() { return höhe; }
-    
-    
+    int getHöhe() { 
+        return höhe; 
+    }
+
+   
+    //setter
+    void setPositionImRaster(int zeile, int spalte) {
+        this.zeile = zeile;
+        this.spalte = spalte;
+    }
+
+    void BombeSetzen() {
+        istBombe = true;
+    }
+
+    void NachbarBombenSetzen(int n) {
+        bombeNachbarn = n;
+    }
+
+    void Aufdecken() {
+        if (istAufgedeckt) return;
+
+        istAufgedeckt = true;
+
+        if (istBombe) {
+            FarbeSetzen("rot"); // Bombe getroffen
+        }
+        else if (bombeNachbarn > 0) {
+            FarbeSetzen("weiß");
+        }
+        else {
+            FarbeSetzen("weiß"); // leeres Feld
+        }
+    }
 }

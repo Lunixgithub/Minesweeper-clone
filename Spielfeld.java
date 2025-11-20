@@ -8,28 +8,42 @@
  * @author Peter Brichzin
  * @version version 1.0
  */
+import java.util.Random;
 
 public class Spielfeld
 {
-    Zelle[][] feld; // Array für alle Karten
+    Zelle[][] feld; // Array für alle Zellen
 
     Spielfeld() 
     {
-        // 1. Karten-Array anlegen (z.B. 4x4)
-        int reihen = 10;
+        
+        int reihen = 12;
         int spalten = 10;
+         int bombenAnzahl = 10;
         feld = new Zelle[reihen][spalten];
 
-        // 2. Karten erzeugen und positionieren
+        // Zellen erzeugen und positionieren
         for (int i = 0; i < reihen; i++) {
             for (int j = 0; j < spalten; j++) {
                 int x = 50 * i + 2;
                 int y = 50 * j + 2;
-                feld[i][j] = new Zelle(x, y, "grün"); // Anfangsfarbe grün
+                feld[i][j] = new Zelle(x, y, "grün"); // am Anfang Grün
+            }
+        }
+        
+        Random rand = new Random();
+        int bomben = bombenAnzahl;
+
+        while (bomben > 0) {
+            int i = rand.nextInt(reihen);
+            int j = rand.nextInt(spalten);
+
+            if (!feld[i][j].istBombe) {
+                feld[i][j].BombeSetzen();
+                bomben--;
             }
         }
 
-        // 3. Ereignisbehandlung starten
         ZellenEreignis ereignis = new ZellenEreignis(feld);
     }
 }
