@@ -1,49 +1,86 @@
-/**
- * Legt die Blumenwelt an und die nicht beweglichen Objekte. 
- * Die Welt besteht aus 10x10 Zellen. Damit die Objekte der Klasse Zelle gut sichtbar sind, wird 
- * zwischen den Zellen ein Abstand von 4 Pixeln gelassen. Mit diesem Rand hat die Welt Zellen der 
- * Größe 50x 50 Pixel.
- * In der Blumenwelt sind auch mehrere Blumen.
- * 
- * @author Peter Brichzin
- * @version version 1.0
- */
-import java.util.Random;
-
-public class Spielfeld
+class Spielfeld
 {
-    Zelle[][] feld; // Array für alle Zellen
+    Zelle[][] feld;
+    int reihen = 10;
+    int spalten = 10;
+    int bomben = 10;
 
-    Spielfeld() 
+    Spielfeld()
     {
-        
-        int reihen = 12;
-        int spalten = 10;
-         int bombenAnzahl = 10;
         feld = new Zelle[reihen][spalten];
 
-        // Zellen erzeugen und positionieren
-        for (int i = 0; i < reihen; i++) {
-            for (int j = 0; j < spalten; j++) {
-                int x = 50 * i + 2;
-                int y = 50 * j + 2;
-                feld[i][j] = new Zelle(x, y, "grün"); // am Anfang Grün
-            }
-        }
-        
-        Random rand = new Random();
-        int bomben = bombenAnzahl;
+        for (int r = 0; r < reihen; r++) {
+            for (int c = 0; c < spalten; c++) {
+                int x = c * 50 + 5;
+                int y = r * 50 + 5;
 
-        while (bomben > 0) {
-            int i = rand.nextInt(reihen);
-            int j = rand.nextInt(spalten);
-
-            if (!feld[i][j].istBombe) {
-                feld[i][j].BombeSetzen();
-                bomben--;
+                feld[r][c] = new Zelle(x, y, "grün");
+                feld[r][c].setKoordinaten(r, c);
             }
         }
 
-        ZellenEreignis ereignis = new ZellenEreignis(feld);
+        bombenLegen();
+        nachbarnBerechnen();
+
+        new MinesweeperEreignis(feld, this);
+    }
+
+    void bombenLegen() {
+        int gelegt = 0;
+        while (gelegt < bomben) {
+            int r = (int)(Math.random() * reihen);
+            int c = (int)(Math.random() * spalten);
+
+            if (feld[r][c].istBombe!= true) {
+                feld[r][c].istBombe = true;
+                gelegt++;
+            }
+        }
+    }
+
+    void nachbarnBerechnen() {
+        for (int r = 0; r < reihen; r++) {
+            for (int c = 0; c < spalten; c++) {
+
+                if (feld[r][c].istBombe) continue;
+
+                int count = 0;
+                for (int dr = -1; dr <= 1; dr++) {
+                    for (int dc = -1; dc <= 1; dc++) {
+
+                        if (dr == 0 && dc == 0) continue;
+
+                        int nr = r + dr;
+                        int nc = c + dc;
+
+                        if (nr >= 0 && nr < reihen && nc >= 0 && nc < spalten) {
+                            if (feld[nr][nc].istBombe) count++;
+                        }
+                    }
+                }
+                feld[r][c].bombeNachbarn = count;
+            }
+        }
+    }
+
+    
+    void floodFill(int r, int c) {
+        if (r < 0 || r >= reihen || c < 0 || c >= spalten){
+         return;   
+        }
+
+        Zelle z = feld[r][c];
+        if (z.istAufgedeckt || z.istBombe){
+            return;
+        }
+
+        z.Aufdecken();
+
+        if (z.bombeNachbarn > 0) return;
+
+        floodFill(r-1, c);
+        floodFill(r+1, c);
+        floodFill(r, c-1);
+        floodFill(r, c+1);
     }
 }
