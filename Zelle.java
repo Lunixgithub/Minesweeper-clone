@@ -11,7 +11,6 @@
 
 class Zelle extends Rechteck
 {
-    // --- MINESWEEPER-FUNKTIONEN ---
     boolean istBombe = false;
     boolean istAufgedeckt = false;
     int bombeNachbarn = 0;
@@ -50,7 +49,7 @@ class Zelle extends Rechteck
 
    
     //setter
-    void setPositionImRaster(int zeile, int spalte) {
+    void setKoordinaten(int zeile, int spalte) {
         this.zeile = zeile;
         this.spalte = spalte;
     }
@@ -64,18 +63,35 @@ class Zelle extends Rechteck
     }
 
     void Aufdecken() {
-        if (istAufgedeckt) return;
+    if (istAufgedeckt) return;
+    istAufgedeckt = true;
 
-        istAufgedeckt = true;
+    if (istBombe) {
+        FarbeSetzen("rot");
+        Text t = new Text();
+        t.PositionSetzen(x + breite/2, y + höhe/2); // mittig
+        t.TextSetzen("B");
+        t.FarbeSetzen("schwarz");
+    } else {
+        FarbeSetzen("weiß");
 
-        if (istBombe) {
-            FarbeSetzen("rot"); // Bombe getroffen
-        }
-        else if (bombeNachbarn > 0) {
-            FarbeSetzen("weiß");
-        }
-        else {
-            FarbeSetzen("weiß"); // leeres Feld
+        if (bombeNachbarn > 0) {
+            Text t = new Text();
+            t.PositionSetzen(x + breite/2, y + höhe/2); // mittig
+            t.TextSetzen("" + bombeNachbarn);
+            
+            if (bombeNachbarn ==1) {
+                t.FarbeSetzen("blau");
+            }
+            else if (bombeNachbarn ==2) {
+                t.FarbeSetzen("schwarz");
+                
+            }
+             else if (bombeNachbarn >2) {
+                t.FarbeSetzen("rot");
+             }
         }
     }
+}
+
 }
