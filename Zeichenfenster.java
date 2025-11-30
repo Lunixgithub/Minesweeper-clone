@@ -737,7 +737,8 @@ class Zeichenfenster {
     }
 
     /**
-     * Setzt die Größe des Textes.
+     * Setzt die Größe des 
+     * es.
      */
     void TextGrößeSetzen(int größe) {
       size = größe;
