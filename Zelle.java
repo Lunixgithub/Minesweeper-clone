@@ -13,6 +13,7 @@ class Zelle extends Rechteck
 {
     boolean istBombe = false;
     boolean istAufgedeckt = false;
+    boolean hatFlagge = false;
     int bombeNachbarn = 0;
 
     int zeile;
@@ -62,6 +63,20 @@ class Zelle extends Rechteck
         bombeNachbarn = n;
     }
 
+
+public void toggleFlagge() {
+    // Flaggen dürfen nur gesetzt werden, wenn das Feld NICHT aufgedeckt ist
+    if (istAufgedeckt) return;
+
+    hatFlagge = !hatFlagge;
+
+    if (hatFlagge) {
+        this.FarbeSetzen("gelb"); 
+    } else {
+        this.FarbeSetzen("grau");   // ursprüngliche Farbe
+    }
+}
+
     void Aufdecken() {
     if (istAufgedeckt) return;
     istAufgedeckt = true;
@@ -73,7 +88,7 @@ class Zelle extends Rechteck
         t.TextSetzen("B");
         t.FarbeSetzen("schwarz");
     } else {
-        FarbeSetzen("weiß");
+        FarbeSetzen("grün");
 
         if (bombeNachbarn > 0) {
             Text t = new Text();
