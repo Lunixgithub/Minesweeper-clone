@@ -4,17 +4,20 @@ class Spielfeld
     int reihen = 10;
     int spalten = 10;
     int bomben = 10;
-
+    int maxFlaggen;
+    int gesetzteFlaggen = 0;
+    SpielStatus status;
     Spielfeld()
     {
         feld = new Zelle[reihen][spalten];
+        status = new SpielStatus(feld, bomben);
 
         for (int r = 0; r < reihen; r++) {
             for (int c = 0; c < spalten; c++) {
                 int x = c * 50 + 5;
                 int y = r * 50 + 5;
 
-                feld[r][c] = new Zelle(x, y, "grün");
+                feld[r][c] = new Zelle(x, y, "grau");
                 feld[r][c].setKoordinaten(r, c);
             }
         }
@@ -22,7 +25,7 @@ class Spielfeld
         bombenLegen();
         nachbarnBerechnen();
 
-        new MinesweeperEreignis(feld, this);
+        new MinesweeperEreignis(feld, this, status);
     }
 
     void bombenLegen() {
@@ -64,23 +67,30 @@ class Spielfeld
     }
 
     
-    void floodFill(int r, int c) {
-        if (r < 0 || r >= reihen || c < 0 || c >= spalten){
-         return;   
-        }
+   void floodFill(int r, int c) {
 
-        Zelle z = feld[r][c];
-        if (z.istAufgedeckt || z.istBombe){
-            return;
-        }
+    // Grenzen prüfen
+    if (r < 0 || r >= feld.length || c < 0 || c >= feld[0].length)
+        return;
 
-        z.Aufdecken();
+    Zelle z = feld[r][c];
 
-        if (z.bombeNachbarn > 0) return;
+    // Wenn schon offen oder Flagge
+    if (z.istAufgedeckt || z.hatFlagge)
+        return;
 
-        floodFill(r-1, c);
-        floodFill(r+1, c);
-        floodFill(r, c-1);
-        floodFill(r, c+1);
-    }
+    // Zelle aufdecken
+    z.Aufdecken(); 
+
+    // Wenn diese Zelle eine Zahl hat
+    if (z.bombeNachbarn > 0)
+        return;
+
+    // wenn bombenachbarn Null ist -> weitergeflutet
+    floodFill(r - 1, c);
+    floodFill(r + 1, c);
+    floodFill(r, c - 1);
+    floodFill(r, c + 1);
+}
+
 }
