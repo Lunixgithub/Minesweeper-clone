@@ -46,7 +46,6 @@ public class Ereignisbehandlung
      */
     void TaktImpulsAusführen ()
     {
-        System.out.println ("Tick");
     }
 
     /**
