@@ -3,10 +3,11 @@ class Spielfeld
     Zelle[][] feld;
     int reihen = 10;
     int spalten = 10;
-    int bomben = 10;
+    int bomben = 2;
     int maxFlaggen;
     int gesetzteFlaggen = 0;
     SpielStatus status;
+    
     Spielfeld()
     {
         feld = new Zelle[reihen][spalten];
@@ -24,8 +25,6 @@ class Spielfeld
 
         bombenLegen();
         nachbarnBerechnen();
-
-        new MinesweeperEreignis(feld, this, status);
     }
 
     void bombenLegen() {
@@ -81,6 +80,7 @@ class Spielfeld
 
     // Zelle aufdecken
     z.Aufdecken(); 
+    status.feldAufgedeckt();
 
     // Wenn diese Zelle eine Zahl hat
     if (z.bombeNachbarn > 0)
