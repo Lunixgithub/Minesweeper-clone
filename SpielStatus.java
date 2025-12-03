@@ -49,6 +49,7 @@ public class SpielStatus {
 
  
     boolean flaggenGewonnen() {
+        System.out.println(aufgedeckteFelder - sichereFelderGesamt);
         return korrektGesetzteFlaggen == bombenGesamt && gesetzteFlaggen == bombenGesamt && !bombeGetroffen;
     }
 
