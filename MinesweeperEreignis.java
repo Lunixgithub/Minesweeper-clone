@@ -2,15 +2,12 @@ class MinesweeperEreignis extends Ereignisbehandlung {
 
     boolean flagMode = false;
     boolean spielVorbei = false;
+    Spielfeld spielfeld;
+    GameManager manager;
 
-    Zelle[][] zellen;
-    Spielfeld spielfeldRef;
-    SpielStatus status;   
-
-    MinesweeperEreignis(Zelle[][] zellenArray, Spielfeld sf, SpielStatus st) {
-        this.zellen = zellenArray;
-        this.spielfeldRef = sf;
-        this.status = st;
+    MinesweeperEreignis(Spielfeld sf, GameManager manager) {
+        this.spielfeld = sf;
+        this.manager = manager;
         Starten();
     }
 
@@ -18,7 +15,6 @@ class MinesweeperEreignis extends Ereignisbehandlung {
     void TasteGedrückt(char taste) {
         if (taste == 'f' || taste == 'F') {
             flagMode = !flagMode;
-            System.out.println("Flag-Modus: " + (flagMode ? "AN" : "AUS"));
         }
     }
 
@@ -27,10 +23,10 @@ class MinesweeperEreignis extends Ereignisbehandlung {
 
         if (spielVorbei) return;
 
-        for (int r = 0; r < zellen.length; r++) {
-            for (int c = 0; c < zellen[r].length; c++) {
+        for (int r = 0; r < spielfeld.feld.length; r++) {
+            for (int c = 0; c < spielfeld.feld[r].length; c++) {
 
-                Zelle z = zellen[r][c];
+                Zelle z = spielfeld.feld[r][c];
 
                 if (x >= z.getX() && x <= z.getX() + z.getBreite() &&
                     y >= z.getY() && y <= z.getY() + z.getHöhe())
@@ -38,47 +34,51 @@ class MinesweeperEreignis extends Ereignisbehandlung {
                     //flagmode
                     if (flagMode) {
                         z.toggleFlagge();
-                        status.flaggeGeändert(z);   // status informieren
+                        spielfeld.status.flaggeGeändert(z);// status informieren
+                        if (spielfeld.status.flaggenGewonnen()) {
+                            spielVorbei = true;
+                            this.manager.gewonnenFlaggen();
+                    }
                         return;
                     }
 
                     
                     if (z.istBombe) {
                         z.Aufdecken();
-                        status.bombeGetroffen();
+                        spielfeld.status.bombeGetroffen();
 
                         // ALLE Bomben sichtbar machen
-                        for (int i = 0; i < zellen.length; i++) {
-                            for (int j = 0; j < zellen[i].length; j++) {
-                                if (zellen[i][j].istBombe)
-                                    zellen[i][j].Aufdecken();
+                        for (int i = 0; i < spielfeld.feld.length; i++) {
+                            for (int j = 0; j < spielfeld.feld[i].length; j++) {
+                                if (spielfeld.feld[i][j].istBombe)
+                                    spielfeld.feld[i][j].Aufdecken();
                             }
                         }
 
                         spielVorbei = true;
-                        System.out.println("BOOM! Game Over!");
+                        this.manager.verloren();
+                
                         return;
                     }
 
                     //aufdecken normal
                     if (!z.istAufgedeckt) {
-                        if (z.bombeNachbarn == 0)
-                            spielfeldRef.floodFill(r, c);
-                        else
+                        if (z.bombeNachbarn == 0){
+                            spielfeld.floodFill(r, c);
+                        }
+                        else {
                             z.Aufdecken();
+                            spielfeld.status.feldAufgedeckt();
+                        }
 
-                        status.feldAufgedeckt();
                     }
 
                    //Siegprüfung
-                    if (status.flaggenGewonnen()) {
-                        System.out.println("GEWONNEN – alle Bomben markiert!");
-                        spielVorbei = true;
-                    }
+                    
 
-                    if (status.alleSicherenAufgedeckt()) {
-                        System.out.println("GEWONNEN – alle sicheren Felder aufgedeckt!");
+                    if (spielfeld.status.alleSicherenAufgedeckt()) {
                         spielVorbei = true;
+                        this.manager.gewonnenFelder();
                     }
 
                     return;
