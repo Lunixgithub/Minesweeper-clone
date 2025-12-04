@@ -4,10 +4,15 @@ class MinesweeperEreignis extends Ereignisbehandlung {
     boolean spielVorbei = false;
     Spielfeld spielfeld;
     GameManager manager;
+    Text flaggenText = new Text();
 
     MinesweeperEreignis(Spielfeld sf, GameManager manager) {
         this.spielfeld = sf;
         this.manager = manager;
+        flaggenText.TextSetzen("Flaggenmodus kann durch drücken von f aktiviert werden");
+        flaggenText.FarbeSetzen("rot");
+        flaggenText.TextGrößeSetzen(15);
+        flaggenText.PositionSetzen(0, 520);
         Starten();
     }
 
@@ -15,13 +20,22 @@ class MinesweeperEreignis extends Ereignisbehandlung {
     void TasteGedrückt(char taste) {
         if (taste == 'f' || taste == 'F') {
             flagMode = !flagMode;
+            if (flagMode == true) {
+                flaggenText.TextSetzen("Flaggenmodus aktiviert");
+            }
+            else {
+                flaggenText.TextSetzen("Flaggenmodus deaktiviert");
+            }
         }
     }
 
     @Override
     void MausGeklickt(int x, int y, int anzahl) {
 
-        if (spielVorbei) return;
+        if (spielVorbei){
+            flaggenText.Entfernen();
+            return;
+        }
 
         for (int r = 0; r < spielfeld.feld.length; r++) {
             for (int c = 0; c < spielfeld.feld[r].length; c++) {
@@ -44,19 +58,20 @@ class MinesweeperEreignis extends Ereignisbehandlung {
 
                     
                     if (z.istBombe) {
-                        z.Aufdecken();
+                        z.aufdecken();
                         spielfeld.status.bombeGetroffen();
 
                         // ALLE Bomben sichtbar machen
                         for (int i = 0; i < spielfeld.feld.length; i++) {
                             for (int j = 0; j < spielfeld.feld[i].length; j++) {
                                 if (spielfeld.feld[i][j].istBombe)
-                                    spielfeld.feld[i][j].Aufdecken();
+                                    spielfeld.feld[i][j].aufdecken();
                             }
                         }
 
                         spielVorbei = true;
                         this.manager.verloren();
+                        flaggenText.Entfernen();
                 
                         return;
                     }
@@ -67,7 +82,7 @@ class MinesweeperEreignis extends Ereignisbehandlung {
                             spielfeld.floodFill(r, c);
                         }
                         else {
-                            z.Aufdecken();
+                            z.aufdecken();
                             spielfeld.status.feldAufgedeckt();
                         }
 
@@ -79,6 +94,7 @@ class MinesweeperEreignis extends Ereignisbehandlung {
                     if (spielfeld.status.alleSicherenAufgedeckt()) {
                         spielVorbei = true;
                         this.manager.gewonnenFelder();
+                        flaggenText.Entfernen();
                     }
 
                     return;
