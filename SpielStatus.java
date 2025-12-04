@@ -1,3 +1,11 @@
+
+
+/**
+ * Klasse für den Status vom Spielfeld
+ * 
+ *
+ */
+
 public class SpielStatus {
 
     int bombenGesamt;
@@ -48,13 +56,13 @@ public class SpielStatus {
     }
 
  
-    boolean flaggenGewonnen() {
+    boolean flaggenGewonnen() { //alle Bomben markiert
         System.out.println(aufgedeckteFelder - sichereFelderGesamt);
         return korrektGesetzteFlaggen == bombenGesamt && gesetzteFlaggen == bombenGesamt && !bombeGetroffen;
     }
 
     
-    boolean alleSicherenAufgedeckt() {
+    boolean alleSicherenAufgedeckt() { //alle Felder ohne Bomben aufgedeckt
         return aufgedeckteFelder == sichereFelderGesamt
                && !bombeGetroffen;
     }

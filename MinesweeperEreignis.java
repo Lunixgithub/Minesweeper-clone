@@ -1,3 +1,9 @@
+
+/**
+ * Klasse für die Verarbeitung von Ereignissen von Minesweeper 
+ *
+ */
+
 class MinesweeperEreignis extends Ereignisbehandlung {
 
     boolean flagMode = false;
@@ -6,7 +12,7 @@ class MinesweeperEreignis extends Ereignisbehandlung {
     GameManager manager;
     Text flaggenText = new Text();
 
-    MinesweeperEreignis(Spielfeld sf, GameManager manager) {
+    MinesweeperEreignis(Spielfeld sf, GameManager manager) { 
         this.spielfeld = sf;
         this.manager = manager;
         flaggenText.TextSetzen("Flaggenmodus kann durch drücken von f aktiviert werden");
@@ -18,7 +24,7 @@ class MinesweeperEreignis extends Ereignisbehandlung {
 
     @Override
     void TasteGedrückt(char taste) {
-        if (taste == 'f' || taste == 'F') {
+        if (taste == 'f' || taste == 'F') { //händelt den Flaggenmodus
             flagMode = !flagMode;
             if (flagMode == true) {
                 flaggenText.TextSetzen("Flaggenmodus aktiviert");
@@ -30,7 +36,7 @@ class MinesweeperEreignis extends Ereignisbehandlung {
     }
 
     @Override
-    void MausGeklickt(int x, int y, int anzahl) {
+    void MausGeklickt(int x, int y, int anzahl) { //händelt Mausklicks
 
         if (spielVorbei){
             flaggenText.Entfernen();

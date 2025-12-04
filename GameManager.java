@@ -1,10 +1,9 @@
 
 import javax.swing.JOptionPane;
 /**
- * Beschreiben Sie hier die Klasse GameManager.
+ * eine Übergeordnete Verwalterklasse die den Status des Spiels verwaltet (gewonnen, verloren, im spiel)
+* 
  * 
- * @author (Ihr Name) 
- * @version (eine Versionsnummer oder ein Datum)
  */
 public class GameManager
 {
@@ -12,11 +11,11 @@ public class GameManager
    private MinesweeperEreignis ereignis;
    
    
-   public GameManager () {
+   public GameManager () { //beim erstellen ein neues Spielfeld und MinesweeperEreignis erstellen
        reset();
    }
    
-   private void reset() {
+   private void reset() { // neues Spiel
        this.spielfeld = new Spielfeld();
        this.ereignis = new MinesweeperEreignis(this.spielfeld, this);
    }

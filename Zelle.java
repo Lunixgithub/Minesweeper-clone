@@ -1,11 +1,12 @@
 
 
 /**
- * Zellen als Bestandteile der Welt, in der sich die Figuren bewegen können. 
- * Jede Zelle hat die Größe 46x46 Pixel. Beachte Ränder um die Zellen, bei der Anordnung in der Welt!
+ * Zellen als Felder des Minesweeperspiels
  * 
- * @author Peter Brichzin
- * @version 1.0
+ * können Aufgedeckt werden und in anderen Klassen zur Erstellung und Verarbeitung von Spielfeldern verwendet werden
+ * 
+ * 
+ * 
  */
 
 
@@ -65,7 +66,7 @@ class Zelle extends Rechteck
 
 
 public void toggleFlagge() {
-    // Flaggen dürfen nur gesetzt werden, wenn das Feld NICHT aufgedeckt ist
+    // Flaggen dürfen nur gesetzt werden, wenn das Feld nicht aufgedeckt ist
     if (istAufgedeckt) return;
 
     hatFlagge = !hatFlagge;
@@ -73,7 +74,7 @@ public void toggleFlagge() {
     if (hatFlagge) {
         this.FarbeSetzen("gelb"); 
     } else {
-        this.FarbeSetzen("grau");   // ursprüngliche Farbe
+        this.FarbeSetzen("grau");   //auf ursprüngliche Farbe zurücksetzen
     }
 }
 
