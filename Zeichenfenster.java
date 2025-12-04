@@ -64,9 +64,9 @@ class Zeichenfenster {
     aktionsEmpfänger = new ArrayList<AktionsEmpfaenger>();
     fenster = new JFrame("Zeichenfenster");
     fenster.setLocation(50, 50);
-    fenster.setSize(600, 600);
-    fenster.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE); // Close-Button kann nicht versteckt oder
-                                                                           // abgestellt werden.
+    fenster.setSize(550, 600);
+    fenster.setResizable(false);
+    fenster.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
     malfläche = new JComponent() {
       public void paint(Graphics g) {
