@@ -3,7 +3,7 @@ class Spielfeld
     Zelle[][] feld;
     int reihen = 10;
     int spalten = 10;
-    int bomben = 2;
+    int bomben = 10;
     int maxFlaggen;
     int gesetzteFlaggen = 0;
     SpielStatus status;
@@ -79,7 +79,7 @@ class Spielfeld
         return;
 
     // Zelle aufdecken
-    z.Aufdecken(); 
+    z.aufdecken(); 
     status.feldAufgedeckt();
 
     // Wenn diese Zelle eine Zahl hat
