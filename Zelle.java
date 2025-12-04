@@ -59,7 +59,7 @@ class Zelle extends Rechteck
         istBombe = true;
     }
 
-    void NachbarBombenSetzen(int n) {
+    void nachbarBombenSetzen(int n) {
         bombeNachbarn = n;
     }
 
@@ -77,7 +77,7 @@ public void toggleFlagge() {
     }
 }
 
-    void Aufdecken() {
+    void aufdecken() {
     if (istAufgedeckt) return;
     istAufgedeckt = true;
 
