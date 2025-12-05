@@ -33,4 +33,8 @@ public class GameManager
         JOptionPane.showMessageDialog(null, "Gewonnen! Alle Felder aufgedeckt! ");
        reset();
    }
+
+   public static void main(String[] args) {
+        new GameManager();
+   }
 }
